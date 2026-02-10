@@ -203,6 +203,7 @@ Content-Type: application/json
   "role": "user"
 }
 ```
+<img width="1919" height="946" alt="image" src="https://github.com/user-attachments/assets/1a82ccf7-a25c-4531-ab17-6cd12fc3baac" />
 
 **Response:**
 ```json
@@ -220,6 +221,7 @@ Content-Type: application/json
   }
 }
 ```
+<img width="1894" height="868" alt="image" src="https://github.com/user-attachments/assets/3edafae0-f5c6-4a5a-8e24-6283dce23064" />
 
 ### 2. Login
 
@@ -232,6 +234,7 @@ Content-Type: application/json
   "password": "password123"
 }
 ```
+<img width="1919" height="878" alt="image" src="https://github.com/user-attachments/assets/1f28936b-7502-4143-9146-a0c4605f29cb" />
 
 **Response:**
 ```json
@@ -262,6 +265,9 @@ Content-Type: application/json
   "description": "Test your knowledge of JavaScript fundamentals"
 }
 ```
+<img width="1814" height="807" alt="image" src="https://github.com/user-attachments/assets/3cdfd9dc-b864-4395-a721-49ecd9fb7ce5" />
+<img width="1897" height="863" alt="image" src="https://github.com/user-attachments/assets/138d0b04-1084-4502-ba04-bed9d20b6510" />
+
 
 ### 4. Add Questions to Quiz
 
@@ -276,6 +282,7 @@ Content-Type: application/json
   "correctAnswer": 0
 }
 ```
+<img width="1890" height="863" alt="image" src="https://github.com/user-attachments/assets/7a23268d-541d-4f3f-98c8-3aa72e620d14" />
 
 ### 5. Submit Quiz Answers
 
@@ -297,6 +304,7 @@ Content-Type: application/json
   ]
 }
 ```
+<img width="1850" height="858" alt="image" src="https://github.com/user-attachments/assets/5795d8f3-bba2-4c82-afb1-ada570d1e879" />
 
 **Response:**
 ```json
