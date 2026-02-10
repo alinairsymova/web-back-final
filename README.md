@@ -2,6 +2,7 @@
 git link: https://github.com/alinairsymova/web-back-final
 
 A RESTful API for a quiz application built with Node.js, Express, MongoDB, and JWT authentication. Users can register, login, create quizzes, add questions, take quizzes, and view their results.
+<img width="591" height="455" alt="image" src="https://github.com/user-attachments/assets/562ce9cb-c8a6-4e2c-ac75-abaf38de96b4" />
 
 ## Features
 
