@@ -2,7 +2,6 @@
 git link: https://github.com/alinairsymova/web-back-final
 
 A RESTful API for a quiz application built with Node.js, Express, MongoDB, and JWT authentication. Users can register, login, create quizzes, add questions, take quizzes, and view their results.
-<img width="591" height="455" alt="image" src="https://github.com/user-attachments/assets/562ce9cb-c8a6-4e2c-ac75-abaf38de96b4" />
 
 ## Features
 
@@ -148,6 +147,7 @@ The server will start at `http://localhost:5000`
 |--------|----------|-------------|---------|
 | POST | `/api/auth/register` | Register new user | Public |
 | POST | `/api/auth/login` | Login user | Public |
+<img width="726" height="229" alt="image" src="https://github.com/user-attachments/assets/69e9b234-6e42-4117-8777-383138461ed3" />
 
 ### User Management
 
@@ -155,6 +155,7 @@ The server will start at `http://localhost:5000`
 |--------|----------|-------------|---------|
 | GET | `/api/users/profile` | Get user profile | Private |
 | PUT | `/api/users/profile` | Update user profile | Private |
+<img width="844" height="265" alt="image" src="https://github.com/user-attachments/assets/a9c05b6e-4731-438b-8a8a-d5bb5df100f8" />
 
 ### Quizzes
 
@@ -165,6 +166,7 @@ The server will start at `http://localhost:5000`
 | GET | `/api/quizzes/:id` | Get single quiz | Public |
 | PUT | `/api/quizzes/:id` | Update quiz | Private (Creator/Admin) |
 | DELETE | `/api/quizzes/:id` | Delete quiz | Private (Creator/Admin) |
+<img width="988" height="495" alt="image" src="https://github.com/user-attachments/assets/3222a89a-aaef-4534-b553-e3d30792b639" />
 
 ### Questions
 
@@ -174,6 +176,7 @@ The server will start at `http://localhost:5000`
 | GET | `/api/quizzes/:id/questions` | Get quiz questions | Private |
 | PUT | `/api/questions/:id` | Update question | Private (Creator/Admin) |
 | DELETE | `/api/questions/:id` | Delete question | Private (Creator/Admin) |
+<img width="939" height="253" alt="image" src="https://github.com/user-attachments/assets/ace37020-6773-4c64-a53d-854f22618a76" />
 
 ### Results
 
@@ -183,6 +186,7 @@ The server will start at `http://localhost:5000`
 | GET | `/api/results/my` | Get my results | Private |
 | GET | `/api/results/:id` | Get specific result | Private (Owner/Admin) |
 | GET | `/api/quizzes/:id/results` | Get all results for quiz | Private (Creator/Admin) |
+<img width="862" height="250" alt="image" src="https://github.com/user-attachments/assets/89137e7b-c8f6-4ae9-881e-ea21d650ef74" />
 
 ## API Usage Examples
 
