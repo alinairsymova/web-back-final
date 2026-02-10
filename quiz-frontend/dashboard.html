@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - QuizMaster</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #107397;
+            --secondary: #79e6f4b8;
+            --dark: #1A1A2E;
+            --light: #f4e9e9;
+            --accent: #ffffff;
+            --purple: #ff007b;
+            --success: #2ed573;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--dark);
+            color: var(--light);
+            overflow-x: hidden;
+        }
+
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(45deg, #3b1d2e, #ff8fb5, #4bbde3);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Header */
+        header {
+            position: sticky;
+            top: 0;
+            background: rgba(255, 134, 198, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1.5rem 5%;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-family: 'Space Mono', monospace;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--purple));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.4);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--light);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 3rem 5%;
+        }
+
+        .welcome {
+            margin-bottom: 3rem;
+        }
+
+        .welcome h1 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #ffffff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .welcome p {
+            color: rgba(234, 234, 234, 0.7);
+            font-size: 1.2rem;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .stat-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--accent);
+            font-family: 'Space Mono', monospace;
+        }
+
+        .stat-label {
+            color: rgba(234, 234, 234, 0.7);
+            margin-top: 0.5rem;
+        }
+
+        /* Actions Bar */
+        .actions-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .search-bar {
+            flex: 1;
+            min-width: 300px;
+            max-width: 500px;
+            position: relative;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 1rem 1.5rem 1rem 3rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            color: var(--light);
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .search-bar input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1.2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0.5;
+        }
+
+        /* Quiz Grid */
+        .quiz-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .quiz-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .quiz-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            border-color: var(--accent);
+        }
+
+        .quiz-header {
+            padding: 2rem;
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.1), rgba(0, 217, 255, 0.1));
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .quiz-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--light);
+        }
+
+        .quiz-description {
+            color: rgba(234, 234, 234, 0.7);
+            line-height: 1.6;
+        }
+
+        .quiz-body {
+            padding: 2rem;
+        }
+
+        .quiz-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            color: rgba(234, 234, 234, 0.6);
+        }
+
+        .quiz-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn-small {
+            padding: 0.6rem 1.2rem;
+            font-size: 0.9rem;
+        }
+
+        .btn-danger {
+            background: rgba(255, 71, 87, 0.2);
+            color: #ff4757;
+            border: 1px solid #ff4757;
+        }
+
+        .btn-danger:hover {
+            background: #ff4757;
+            color: white;
+        }
+
+        .btn-success {
+            background: rgba(46, 213, 115, 0.2);
+            color: var(--success);
+            border: 1px solid var(--success);
+        }
+
+        .btn-success:hover {
+            background: var(--success);
+            color: white;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: rgba(26, 26, 46, 0.95);
+            padding: 3rem;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            max-width: 600px;
+            width: 90%;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .modal-header h2 {
+            font-size: 2rem;
+            color: var(--accent);
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 2rem;
+            color: var(--light);
+            cursor: pointer;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+
+        .close-btn:hover {
+            opacity: 1;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: rgba(234, 234, 234, 0.8);
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            color: var(--light);
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 20px rgba(0, 217, 255, 0.2);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 5rem 2rem;
+        }
+
+        .empty-state-icon {
+            font-size: 5rem;
+            margin-bottom: 2rem;
+            opacity: 0.3;
+        }
+
+        .empty-state h3 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: rgba(234, 234, 234, 0.7);
+        }
+
+        .empty-state p {
+            color: rgba(234, 234, 234, 0.5);
+            margin-bottom: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .quiz-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .welcome h1 {
+                font-size: 2rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+
+    <header>
+        <div class="logo">QuizMaster</div>
+        <div class="user-info">
+            <span id="userName">Пользователь</span>
+            <div class="user-avatar" id="userAvatar">U</div>
+            <button class="btn btn-outline" onclick="logout()">Выйти</button>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="welcome">
+            <h1>Добро пожаловать!</h1>
+            <p>Управляйте своими квизами и следите за результатами</p>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">📝</div>
+                <div class="stat-number" id="totalQuizzes">0</div>
+                <div class="stat-label">Всего квизов</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">✅</div>
+                <div class="stat-number" id="completedQuizzes">0</div>
+                <div class="stat-label">Пройдено</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🏆</div>
+                <div class="stat-number" id="avgScore">0%</div>
+                <div class="stat-label">Средний балл</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">⭐</div>
+                <div class="stat-number" id="myQuizzes">0</div>
+                <div class="stat-label">Мои квизы</div>
+            </div>
+        </div>
+
+        <div class="actions-bar">
+            <div class="search-bar">
+                <span class="search-icon">🔍</span>
+                <input type="text" placeholder="Поиск квизов..." id="searchInput">
+            </div>
+            <button class="btn btn-primary" onclick="openCreateModal()">
+                + Создать квиз
+            </button>
+        </div>
+
+        <div class="quiz-grid" id="quizGrid">
+            <!-- Quizzes will be loaded here -->
+        </div>
+    </div>
+
+    <!-- Create Quiz Modal -->
+    <div class="modal" id="createModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Создать новый квиз</h2>
+                <button class="close-btn" onclick="closeCreateModal()">&times;</button>
+            </div>
+            <form id="createQuizForm">
+                <div class="form-group">
+                    <label for="quizTitle">Название квиза</label>
+                    <input type="text" id="quizTitle" required placeholder="Например: JavaScript Basics">
+                </div>
+                <div class="form-group">
+                    <label for="quizDescription">Описание</label>
+                    <textarea id="quizDescription" required placeholder="Опишите ваш квиз..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Создать квиз</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:5000/api';
+        let token = localStorage.getItem('token');
+        let user = JSON.parse(localStorage.getItem('user') || '{}');
+
+        // Check if user is logged in
+        if (!token) {
+            window.location.href = 'login.html';
+        }
+
+        // Set user info
+        document.getElementById('userName').textContent = user.username || 'Пользователь';
+        document.getElementById('userAvatar').textContent = (user.username || 'U')[0].toUpperCase();
+
+        // Load quizzes
+        async function loadQuizzes() {
+            try {
+                const response = await fetch(`${API_URL}/quizzes`);
+                const data = await response.json();
+
+                if (data.success) {
+                    displayQuizzes(data.data);
+                    updateStats(data.data);
+                }
+            } catch (error) {
+                console.error('Error loading quizzes:', error);
+            }
+        }
+
+        function displayQuizzes(quizzes) {
+            const grid = document.getElementById('quizGrid');
+            
+            if (quizzes.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1/-1;">
+                        <div class="empty-state-icon">📝</div>
+                        <h3>Пока нет квизов</h3>
+                        <p>Создайте свой первый квиз прямо сейчас!</p>
+                        <button class="btn btn-primary" onclick="openCreateModal()">Создать квиз</button>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = quizzes.map(quiz => `
+                <div class="quiz-card">
+                    <div class="quiz-header">
+                        <div class="quiz-title">${quiz.title}</div>
+                        <div class="quiz-description">${quiz.description}</div>
+                    </div>
+                    <div class="quiz-body">
+                        <div class="quiz-meta">
+                            <span>👤 ${quiz.createdBy?.username || 'Аноним'}</span>
+                            <span>📅 ${new Date(quiz.createdAt).toLocaleDateString('ru-RU')}</span>
+                        </div>
+                        <div class="quiz-actions">
+                            <button class="btn btn-success btn-small" onclick="takeQuiz('${quiz._id}')">
+                                Пройти
+                            </button>
+                            ${quiz.createdBy?._id === user.id || user.role === 'admin' ? `
+                                <button class="btn btn-outline btn-small" onclick="editQuiz('${quiz._id}')">
+                                    Редактировать
+                                </button>
+                                <button class="btn btn-danger btn-small" onclick="deleteQuiz('${quiz._id}')">
+                                    Удалить
+                                </button>
+                            ` : ''}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function updateStats(quizzes) {
+            document.getElementById('totalQuizzes').textContent = quizzes.length;
+            const myQuizzes = quizzes.filter(q => q.createdBy?._id === user.id);
+            document.getElementById('myQuizzes').textContent = myQuizzes.length;
+        }
+
+        // Create quiz
+        document.getElementById('createQuizForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const title = document.getElementById('quizTitle').value;
+            const description = document.getElementById('quizDescription').value;
+
+            try {
+                const response = await fetch(`${API_URL}/quizzes`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ title, description })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    closeCreateModal();
+                    loadQuizzes();
+                    alert('Квиз успешно создан!');
+                } else {
+                    alert(data.message || 'Ошибка создания квиза');
+                }
+            } catch (error) {
+                alert('Ошибка: ' + error.message);
+            }
+        });
+
+        async function deleteQuiz(id) {
+            if (!confirm('Вы уверены, что хотите удалить этот квиз?')) return;
+
+            try {
+                const response = await fetch(`${API_URL}/quizzes/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    loadQuizzes();
+                    alert('Квиз удален!');
+                } else {
+                    alert(data.message || 'Ошибка удаления');
+                }
+            } catch (error) {
+                alert('Ошибка: ' + error.message);
+            }
+        }
+
+        function takeQuiz(id) {
+            window.location.href = `take-quiz.html?id=${id}`;
+        }
+
+        function editQuiz(id) {
+            window.location.href = `edit-quiz.html?id=${id}`;
+        }
+
+        function openCreateModal() {
+            document.getElementById('createModal').classList.add('show');
+        }
+
+        function closeCreateModal() {
+            document.getElementById('createModal').classList.remove('show');
+            document.getElementById('createQuizForm').reset();
+        }
+
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = 'login.html';
+        }
+
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            const cards = document.querySelectorAll('.quiz-card');
+            
+            cards.forEach(card => {
+                const title = card.querySelector('.quiz-title').textContent.toLowerCase();
+                const description = card.querySelector('.quiz-description').textContent.toLowerCase();
+                
+                if (title.includes(searchTerm) || description.includes(searchTerm)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+
+        // Load quizzes on page load
+        loadQuizzes();
+    </script>
+</body>
+</html>

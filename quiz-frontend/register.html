@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация - QuizMaster</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #ff35ab;
+            --secondary: #f71ea45d;
+            --dark: #1A1A2E;
+            --light: #EAEAEA;
+            --accent: #ff007b;
+            --purple: #e55d9f;
+            --success: #2ed573;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--dark);
+            color: var(--light);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            padding: 2rem 1rem;
+        }
+
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(45deg, #3b1d2e, #ff8fb5, #4bbde3);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .floating-shapes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.15;
+            animation: float 20s infinite;
+        }
+
+        .shape:nth-child(1) {
+            width: 400px;
+            height: 400px;
+            background: var(--purple);
+            top: -10%;
+            right: -10%;
+            animation-delay: 0s;
+        }
+
+        .shape:nth-child(2) {
+            width: 350px;
+            height: 350px;
+            background: var(--primary);
+            bottom: -10%;
+            left: -10%;
+            animation-delay: 5s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(-50px, 50px); }
+        }
+
+        .register-container {
+            width: 100%;
+            max-width: 500px;
+            padding: 3rem;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+            animation: fadeInUp 0.8s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-family: 'Space Mono', monospace;
+            letter-spacing: -1px;
+        }
+
+        .logo p {
+            color: rgba(234, 234, 234, 0.6);
+            margin-top: 0.5rem;
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            color: var(--light);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: rgba(234, 234, 234, 0.8);
+            font-weight: 500;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            color: var(--light);
+            font-size: 1rem;
+            font-family: 'Outfit', sans-serif;
+            transition: all 0.3s;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 20px rgba(0, 217, 255, 0.2);
+        }
+
+        input::placeholder {
+            color: rgba(234, 234, 234, 0.4);
+        }
+
+        select {
+            cursor: pointer;
+        }
+
+        select option {
+            background: var(--dark);
+            color: var(--light);
+        }
+
+        .password-strength {
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            margin-top: 0.5rem;
+            overflow: hidden;
+        }
+
+        .password-strength-bar {
+            height: 100%;
+            width: 0;
+            transition: all 0.3s;
+            border-radius: 2px;
+        }
+
+        .password-strength-bar.weak {
+            width: 33%;
+            background: #ff4757;
+        }
+
+        .password-strength-bar.medium {
+            width: 66%;
+            background: #ffa502;
+        }
+
+        .password-strength-bar.strong {
+            width: 100%;
+            background: #2ed573;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 1.2rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border: none;
+            border-radius: 15px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Outfit', sans-serif;
+            margin-top: 1rem;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(255, 107, 53, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .footer-links {
+            text-align: center;
+            margin-top: 2rem;
+            color: rgba(234, 234, 234, 0.6);
+        }
+
+        .footer-links a {
+            color: var(--accent);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+
+        .terms {
+            font-size: 0.85rem;
+            color: rgba(234, 234, 234, 0.5);
+            margin-top: 1rem;
+            text-align: center;
+        }
+
+        .terms a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .alert {
+            padding: 1rem;
+            background: rgba(255, 107, 53, 0.1);
+            border: 1px solid rgba(255, 107, 53, 0.3);
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            display: none;
+        }
+
+        .alert.show {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .back-link {
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            color: var(--light);
+            text-decoration: none;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+        }
+
+        .back-link:hover {
+            color: var(--accent);
+            transform: translateX(-5px);
+        }
+
+        @media (max-width: 768px) {
+            .register-container {
+                padding: 2rem;
+            }
+
+            .back-link {
+                position: static;
+                margin-bottom: 2rem;
+            }
+
+            body {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation">
+        <div class="floating-shapes">
+            <div class="shape"></div>
+            <div class="shape"></div>
+        </div>
+    </div>
+
+    <a href="index.html" class="back-link">← Назад на главную</a>
+
+    <div class="register-container">
+        <div class="logo">
+            <h1>QuizMaster</h1>
+            <p>Создайте свой аккаунт ✨</p>
+        </div>
+
+        <h2>Регистрация</h2>
+
+        <div class="alert" id="alert">
+            <span id="alert-message"></span>
+        </div>
+
+        <form id="registerForm">
+            <div class="form-group">
+                <label for="username">Имя пользователя</label>
+                <input type="text" id="username" name="username" placeholder="johndoe" required minlength="3">
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="your@email.com" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Пароль</label>
+                <input type="password" id="password" name="password" placeholder="••••••••" required minlength="6">
+                <div class="password-strength">
+                    <div class="password-strength-bar" id="strengthBar"></div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="confirmPassword">Подтвердите пароль</label>
+                <input type="password" id="confirmPassword" name="confirmPassword" placeholder="••••••••" required>
+            </div>
+
+            <div class="form-group">
+                <label for="role">Роль</label>
+                <select id="role" name="role">
+                    <option value="user">Пользователь</option>
+                    <option value="admin">Администратор</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn" id="submitBtn">Создать аккаунт</button>
+        </form>
+
+        <div class="terms">
+            Регистрируясь, вы соглашаетесь с <a href="#">Условиями использования</a> и <a href="#">Политикой конфиденциальности</a>
+        </div>
+
+        <div class="footer-links">
+            Уже есть аккаунт? <a href="login.html">Войти</a>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:5000/api';
+
+        // Password strength checker
+        document.getElementById('password').addEventListener('input', (e) => {
+            const password = e.target.value;
+            const strengthBar = document.getElementById('strengthBar');
+            
+            let strength = 0;
+            if (password.length >= 6) strength++;
+            if (password.length >= 10) strength++;
+            if (/[a-z]/.test(password) && /[A-Z]/.test(password)) strength++;
+            if (/\d/.test(password)) strength++;
+            if (/[^a-zA-Z\d]/.test(password)) strength++;
+
+            strengthBar.className = 'password-strength-bar';
+            if (strength <= 2) {
+                strengthBar.classList.add('weak');
+            } else if (strength <= 4) {
+                strengthBar.classList.add('medium');
+            } else {
+                strengthBar.classList.add('strong');
+            }
+        });
+
+        // Form submission
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const role = document.getElementById('role').value;
+            const alert = document.getElementById('alert');
+            const alertMessage = document.getElementById('alert-message');
+            const submitBtn = document.getElementById('submitBtn');
+
+            // Validate passwords match
+            if (password !== confirmPassword) {
+                alertMessage.textContent = 'Пароли не совпадают!';
+                alert.classList.add('show');
+                setTimeout(() => alert.classList.remove('show'), 5000);
+                return;
+            }
+
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Создание аккаунта...';
+
+            try {
+                const response = await fetch(`${API_URL}/auth/register`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, email, password, role })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // Сохраняем токен
+                    localStorage.setItem('token', data.data.token);
+                    localStorage.setItem('user', JSON.stringify(data.data.user));
+
+                    // Показываем успех
+                    alertMessage.textContent = 'Регистрация успешна! Перенаправление...';
+                    alert.style.background = 'rgba(0, 217, 255, 0.1)';
+                    alert.style.borderColor = 'rgba(0, 217, 255, 0.3)';
+                    alert.style.color = '#00D9FF';
+                    alert.classList.add('show');
+
+                    // Перенаправляем
+                    setTimeout(() => {
+                        window.location.href = 'dashboard.html';
+                    }, 1000);
+                } else {
+                    throw new Error(data.message || 'Ошибка регистрации');
+                }
+            } catch (error) {
+                alertMessage.textContent = error.message;
+                alert.style.background = 'rgba(255, 107, 53, 0.1)';
+                alert.style.borderColor = 'rgba(255, 107, 53, 0.3)';
+                alert.style.color = '#FF6B35';
+                alert.classList.add('show');
+
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Создать аккаунт';
+
+                setTimeout(() => {
+                    alert.classList.remove('show');
+                }, 5000);
+            }
+        });
+    </script>
+</body>
+</html>
